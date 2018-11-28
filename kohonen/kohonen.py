@@ -134,7 +134,7 @@ def heatmap(raw, axes=(0, 1), lower=None, upper=None):
     Returns an annotated Image object (as returned from _image).
     '''
     assert len(axes) == 2
-    for ax in xrange(len(raw.shape) - 1, -1, -1):
+    for ax in range(len(raw.shape) - 1, -1, -1):
         if ax in axes:
             continue
         raw = raw.sum(axis=ax)
@@ -146,7 +146,7 @@ def heatmap(raw, axes=(0, 1), lower=None, upper=None):
     if u is None:
         u = raw.max() * 1.01
         u *= u > 0 and 1.01 or 0.99
-    return _image(raw, l, u, format)
+    return _image(raw, l, u)
 
 
 def colormap(raw, axes=(0, 1, 2), layers=(0, 1, 2)):
@@ -165,7 +165,7 @@ def colormap(raw, axes=(0, 1, 2), layers=(0, 1, 2)):
     Returns an Image object, as in the heatmap() function.
     '''
     assert len(axes) == len(layers) == 3
-    for ax in xrange(len(raw.shape) - 1, -1, -1):
+    for ax in range(len(raw.shape) - 1, -1, -1):
         if ax in axes:
             continue
         raw = raw.sum(axis=ax)
@@ -369,7 +369,7 @@ class Map(object):
             offset = self.shape[axis] - size - 1
             z.append(slice(offset, offset + self.shape[axis]))
         sigma = self._neighborhood_size()
-        return self._neighborhood_mask[z] ** (1.0 / sigma / sigma)
+        return self._neighborhood_mask[tuple(z)] ** (1.0 / sigma / sigma)
 
     def distances(self, cue):
         '''Get the distance of each neuron in the Map to a particular cue.'''
